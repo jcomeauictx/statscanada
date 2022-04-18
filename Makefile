@@ -1,2 +1,4 @@
-run: stats.py
+run: stats.py lint
 	./$<
+lint: stats.py
+	pylint3 $<

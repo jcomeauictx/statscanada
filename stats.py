@@ -2,18 +2,29 @@
 '''
 extract statistics from csv file provided by stats canada
 
-'https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1310076801&pickMembers%5B0%5D=3.1&cubeTimeFrame.startDaily=2020-01-04&cubeTimeFrame.endDaily=2022-02-05&referencePeriods=20200104%2C20220205'
 '''
-import sys, os, csv, logging
+import sys, csv, logging  # pylint: disable=multiple-imports
 from datetime import datetime
 from matplotlib import pyplot
 logging.basicConfig(level=logging.DEBUG if __debug__ else logging.INFO)
 
 BOM = '\ufeff'
 SOURCE_URL = '//jessicar.substack.com/p/what-is-going-on-in-new-brunswick'
+DATA_SOURCE = (
+    'https://www150.statcan.gc.ca/t1/tbl1/en/tv.action'
+    '?pid=1310076801'
+    '&pickMembers%5B0%5D=3.1'
+    '&cubeTimeFrame.startDaily=2020-01-04'
+    '&cubeTimeFrame.endDaily=2022-02-05'
+    '&referencePeriods=20200104%2C20220205'
+)
 
 def stats(filename='13100768.csv', location='all',
           age='all ages', sex='Both sexes', save_subset=False):
+    '''
+    plot charts for provinces
+    '''
+    # pylint: disable=too-many-locals
     logging.debug('processing data for %s', location)
     dateformat = lambda d: datetime.strptime(d, '%Y-%m-%d')
     pathname = '_'.join([
@@ -67,4 +78,5 @@ def stats(filename='13100768.csv', location='all',
     pyplot.show()
 
 if __name__ == '__main__':
+    print('If program fails, download data from %s' % DATA_SOURCE)
     stats(*sys.argv[1:])
